@@ -28,12 +28,13 @@ def messageReceived(methods=['GET', 'POST']):
 def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
     print(json['message'])
-    try:
+    if True:
         status=passMessage(json['message'])
         if status==True:
             socketio.emit('my response', json, callback=messageReceived)
-    except:
-        pass
+    # except:
+    #     print ('hi')
+    #     pass
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True,port=5001)
+    socketio.run(app, host='127.0.0.1', debug=True,port=6001)

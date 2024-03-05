@@ -67,13 +67,14 @@ def AddData(usersdata):
 
 #Synonyms code
 def find_synonyms(word):
+    vector,model=code_reload()
     synonyms = set()
     f=0
     count_bad=0
     count_good=0
     for syn in wordnet.synsets(word):
         for lemma in syn.lemmas():
-            if(predict_word_status(lemma.name())=='Bad'):
+            if(predict_word_status(vector,model,lemma.name())=='Bad'):
               count_bad=count_bad+1
               # print(f"The word '{user_input}' is classified as Bad.")
               # print("badWord:",lemma.name())
