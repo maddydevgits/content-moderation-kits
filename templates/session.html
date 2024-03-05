@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Moderation App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      flex-grow: 1;
+    }
+
+    input[type="submit"] {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    .message-container {
+      overflow-y: auto;
+      max-height: 300px;
+    }
+
+    .message {
+      background-color: #f0f0f0;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+    }
+
+    .message b {
+      color: #007bff;
+    }
+
+    .no-message {
+      color: #ccc;
+      font-size: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Content Moderation App</h1>
+
+  <div class="message-container">
+    <div class="no-message">No messages yet...</div>
+  </div>
+
+  <form action="" method="POST">
+    <input type="text" class="username" placeholder="User Name">
+    <input type="text" class="message" placeholder="Message">
+    <input type="submit" value="Send">
+  </form>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+<script type="text/javascript">
+  var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+  socket.on('connect', function() {
+    socket.emit('my event', {
+      data: 'User Connected'
+    });
+    var form = $('form').on('submit', function(e) {
+      e.preventDefault();
+      let user_name = $('input.username').val();
+      let user_input = $('input.message').val();
+      socket.emit('my event', {
+        user_name: user_name,
+        message: user_input
+      });
+      $('input.message').val('').focus();
+    });
+  });
+  socket.on('my response', function(msg) {
+    console.log(msg);
+    if (typeof msg.user_name !== 'undefined') {
+      $('.no-message').remove();
+      $('.message-container').append('<div class="message"><b>' + msg.user_name + '</b>: ' + msg.message + '</div>');
+    }
+  });
+</script>
+
+</body>
+</html>
