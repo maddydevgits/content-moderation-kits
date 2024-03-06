@@ -32,6 +32,8 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
         status=passMessage(json['message'])
         if status==True:
             socketio.emit('my response', json, callback=messageReceived)
+        if status==False:
+            socketio.emit('badword alert',"Bad Word Detected",callback=messageReceived)
     # except:
     #     print ('hi')
     #     pass

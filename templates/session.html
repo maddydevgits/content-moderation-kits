@@ -48,6 +48,12 @@
       border-radius: 4px;
       cursor: pointer;
     }
+    .btn{
+      text-decoration: none;
+      width: 60px;
+      height: 12px;
+      border-radius: 10px;
+    }
 
     input[type="submit"]:hover {
       background-color: #0056b3;
@@ -85,11 +91,16 @@
     <div class="no-message">No messages yet...</div>
   </div>
 
+
   <form action="" method="POST">
     <input type="text" class="username" placeholder="User Name">
     <input type="text" class="message" placeholder="Message">
     <input type="submit" value="Send">
   </form>
+  <div class="message-badbox">
+    <p style="color:red" id="alert"></p>
+  </div>
+  <a href="/badwords" class="btn"><button>Add badwords</button></a>
 </div>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -130,6 +141,10 @@
       $('.message-container').append('<div class="message"><b>' + msg.user_name + '</b>: ' + msg.message + '</div>');
     }
   });
+  socket.on('badword alert',function(msg){
+      console.log(msg);
+      document.getElementById('alert').innerHTML=msg;
+  })
 </script>
 
 </body>
